@@ -1,0 +1,3 @@
+[submodule "external_libs/mbedTLS"]
+	path = external_libs/mbedTLS
+	url = git@github.com:ARMmbed/mbedtls.git
