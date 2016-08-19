@@ -43,6 +43,7 @@ extern "C" {
 #include <aws_iot_mqtt_client.h>
 #include <unistd.h>
 #include "aws_iot_mqtt_client_common_internal.h"
+#include "buffer_output.h"
 
 /* Max length of packet header */
 #define MAX_NO_OF_REMAINING_LENGTH_BYTES 4
@@ -288,6 +289,8 @@ IoT_Error_t aws_iot_mqtt_internal_send_packet(AWS_IoT_Client *pClient, size_t le
 
 	sentLen = 0;
 	sent = 0;
+
+	SHOW_BUFFER(pClient->clientData.writeBuf, length);
 
 	while(sent < length && !has_timer_expired(pTimer)) {
 		rc = pClient->networkStack.write(&(pClient->networkStack), &pClient->clientData.writeBuf[sent], length, pTimer,
