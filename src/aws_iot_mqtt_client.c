@@ -202,6 +202,8 @@ IoT_Error_t aws_iot_mqtt_init(AWS_IoT_Client *pClient, IoT_Client_Init_Params *p
 	}
 #endif
 
+	pClient->clientStatus.bytesRecieved = 0;
+	pClient->clientStatus.bytesSent = 0;
 	pClient->clientStatus.isPingOutstanding = 0;
 	pClient->clientStatus.isAutoReconnectEnabled = pInitParams->enableAutoReconnect;
 

@@ -245,6 +245,8 @@ typedef struct _ClientStatus {
 	ClientState clientState;
 	bool isPingOutstanding;
 	bool isAutoReconnectEnabled;
+    uint64_t bytesSent;
+    uint64_t bytesRecieved;
 } ClientStatus;
 
 /**

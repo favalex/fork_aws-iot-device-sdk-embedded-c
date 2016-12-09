@@ -306,6 +306,8 @@ IoT_Error_t aws_iot_mqtt_internal_send_packet(AWS_IoT_Client *pClient, size_t le
 	}
 #endif
 
+    (pClient->clientStatus.bytesSent) += sent;
+
 	if(sent == length) {
 		/* record the fact that we have successfully sent the packet */
 		//countdown_sec(&c->pingTimer, c->clientData.keepAliveInterval);
@@ -364,6 +366,8 @@ static IoT_Error_t _aws_iot_mqtt_internal_read_packet(AWS_IoT_Client *pClient, T
 
 	len = 1;
 
+	(pClient->clientStatus.bytesRecieved) += len;
+
 	/* 2. read the remaining length.  This is variable in itself */
 	rc = _aws_iot_mqtt_internal_decode_packet_remaining_len(pClient, &rem_len, pTimer);
 	if(SUCCESS != rc) {
@@ -388,6 +392,8 @@ static IoT_Error_t _aws_iot_mqtt_internal_read_packet(AWS_IoT_Client *pClient, T
 		return MQTT_RX_BUFFER_TOO_SHORT_ERROR;
 	}
 
+	(pClient->clientStatus.bytesRecieved) += total_bytes_read;
+
 	/* put the original remaining length into the read buffer */
 	len += aws_iot_mqtt_internal_write_len_to_buffer(pClient->clientData.readBuf + 1, (uint32_t) rem_len);
 
@@ -395,6 +401,9 @@ static IoT_Error_t _aws_iot_mqtt_internal_read_packet(AWS_IoT_Client *pClient, T
 	if(rem_len > 0) {
 		rc = pClient->networkStack.read(&(pClient->networkStack), pClient->clientData.readBuf + len, rem_len, pTimer,
 										&read_len);
+
+		(pClient->clientStatus.bytesRecieved) += read_len;
+
 		if(SUCCESS != rc || read_len != rem_len) {
 			return FAILURE;
 		}
