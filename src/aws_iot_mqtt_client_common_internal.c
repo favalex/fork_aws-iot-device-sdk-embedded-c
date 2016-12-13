@@ -376,6 +376,12 @@ static IoT_Error_t _aws_iot_mqtt_internal_read_packet(AWS_IoT_Client *pClient, T
 
 	(pClient->clientStatus.bytesRecieved) += len;
 
+	/* Use the constant packet receive timeout, instead of the variable (remaining) pTimer time, to
+	 * determine packet receiving timeout. This is done so we don't prematurely time out packet receiving
+	 * if the remaining time in pTimer is too short.
+	 */
+	pTimer = &packetTimer;
+
 	/* 2. read the remaining length.  This is variable in itself */
 	rc = _aws_iot_mqtt_internal_decode_packet_remaining_len(pClient, &rem_len, pTimer);
 	if(SUCCESS != rc) {
