@@ -1,3 +1,3 @@
 [submodule "external_libs/mbedTLS"]
 	path = external_libs/mbedTLS
-	url = git@bitbucket.org:sunpowerfw/fork_mbedtls.git
+	url = git@github.com:SunPower/fork_mbedtls.git
