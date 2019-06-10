@@ -36,4 +36,4 @@ target_include_directories(awsiot
     ../aws-iot-libraries
 )
 
-target_link_libraries(awsiot PRIVATE mbedtls jsmn)
+target_link_libraries(awsiot PUBLIC mbedtls PRIVATE jsmn)
